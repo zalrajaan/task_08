@@ -3,6 +3,7 @@ from .models import Restaurant
 from .forms import RestaurantForm
 
 def restaurant_list(request):
+    
     context = {
         "restaurants":Restaurant.objects.all()
     }
@@ -18,7 +19,7 @@ def restaurant_detail(request, restaurant_id):
 def restaurant_create(request):
     form = RestaurantForm()
     if request.method == "POST":
-        form = RestaurantForm(request.POST)
+        form = RestaurantForm(request.POST, request.FILES or None,)
         if form.is_valid():
             form.save()
             return redirect('restaurant-list')
@@ -31,7 +32,7 @@ def restaurant_update(request, restaurant_id):
     restaurant_obj = Restaurant.objects.get(id=restaurant_id)
     form = RestaurantForm(instance=restaurant_obj)
     if request.method == "POST":
-        form = RestaurantForm(request.POST, instance=restaurant_obj)
+        form = RestaurantForm(request.POST, request.FILES or None, instance=restaurant_obj)
         if form.is_valid():
             form.save()
             return redirect('restaurant-list')
